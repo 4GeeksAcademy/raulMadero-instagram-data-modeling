@@ -28,6 +28,34 @@ class Address(Base):
     def to_dict(self):
         return {}
 
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(60), nullable=False)
+    user_name = Column(String(30), unique=True, nullable=False)
+    email = Column(String(45), unique=True, nullable=False)
+    password = Column(String(60), nullable=False)
+    gender = Column(String(20), nullable=True)
+
+class Post(Base):
+    __tablename__ = 'posts'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    title = Column(String(30), nullable=False)
+    description = Column(String(100), nullable=False)
+
+class Like(Base):
+    __tablename__ = 'likes'
+    id = Column(Integer, primary_key=True)
+    post_id = Column(Integer, ForeignKey('posts.id'))
+    user_id = Column(Integer, ForeignKey('users.id'))
+
+class Comment(Base):
+    __tablename__ = 'comments'
+    id = Column(Integer, primary_key=True)
+    post_id = Column(Integer, ForeignKey('posts.id'))
+    user_id = Column(Integer, ForeignKey('users.id'))
+    description = Column(String(100), nullable=True)    
 ## Draw from SQLAlchemy base
 try:
     result = render_er(Base, 'diagram.png')
